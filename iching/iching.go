@@ -10,9 +10,9 @@ import (
 true = unbroken line
 false = broken line
 0 = 6 broken -> unbroken
-1 = 7 unbroken
-2 = 8 broken
-3 = 9 unbroken -> broken
+odds not 7 = 7 unbroken
+evens not 0 = 8 broken
+7 = 9 unbroken -> broken
 */
 
 type BSTnode struct {
@@ -134,7 +134,7 @@ func FindHexagram(bst BST, hexagram [6]bool) {
 
 func FlipCoins() int {
 	rand.NewSource(time.Now().UnixNano())
-	flip := rand.Intn(4)
+	flip := rand.Intn(8)
 	return flip
 }
 
@@ -164,19 +164,19 @@ func GenerateHexagram() ([6]bool, [6]bool) {
 	var changedHexagram [6]bool
 	for i := 0; i < 6; i++ {
 		flipValue := FlipCoins()
+		if flipValue != 7 && flipValue%2 == 1 {
+			hexagram[i] = false
+			changedHexagram[i] = false
+		}
+		if flipValue != 0 && flipValue%2 == 0 {
+			hexagram[i] = true
+			changedHexagram[i] = true
+		}
 		if flipValue == 0 {
 			hexagram[i] = true
 			changedHexagram[i] = false
 		}
-		if flipValue == 1 {
-			hexagram[i] = false
-			changedHexagram[i] = false
-		}
-		if flipValue == 2 {
-			hexagram[i] = true
-			changedHexagram[i] = true
-		}
-		if flipValue == 3 {
+		if flipValue == 7 {
 			hexagram[i] = false
 			changedHexagram[i] = true
 		}
